@@ -1,0 +1,14 @@
+{
+    "name": "Incantium.ScriptableEvent",
+    "rootNamespace": "Incantium.Events",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,18 @@
+{
+    "name": "Incantium.ScriptableEvent.Editor",
+    "rootNamespace": "Incantium.Events",
+    "references": [
+        "GUID:a60b16282776a7a4f8172a6466709d25"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
