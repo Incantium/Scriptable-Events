@@ -1,6 +1,6 @@
 {
   "name": "com.incantium.scriptable-event",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "displayName": "Scriptable Event",
   "description": "Create, test, and manage ScriptableObject events.",
   "unity": "2022.3",
