@@ -4,21 +4,34 @@ using UnityEngine;
 
 namespace Incantium.Events.Editor
 {
+    /// <summary>
+    /// Class representing additional reusable methods to draw delegates within the Unity Editor.
+    /// </summary>
     internal static class EventExtensions
     {
-        internal static void InvocationList(Delegate[] list)
+        /// <summary>
+        /// Method to draw the Unity Editor list of all connected methods to this <see cref="Delegate"/> list.
+        /// </summary>
+        /// <param name="del">The <see cref="Delegate"/> to draw within the Unity Editor.</param>
+        /// <remarks>When no methods are connected, this method will leave a help box with a message.</remarks>
+        internal static void DrawInvocationList(this MulticastDelegate del)
         {
+            var list = del?.GetInvocationList();
+            
             if (list is not { Length: > 0 })
             {
                 EditorGUILayout.HelpBox("No callbacks registered.", MessageType.Info, true);
                 return;
             }
 
-            CreateHeader();
-            CreateList(list);
+            DrawHeader();
+            DrawList(list);
         }
 
-        private static void CreateHeader()
+        /// <summary>
+        /// Method to draw the header of the list.
+        /// </summary>
+        private static void DrawHeader()
         {
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("Target:", EditorStyles.boldLabel);
@@ -26,13 +39,17 @@ namespace Incantium.Events.Editor
             EditorGUILayout.EndHorizontal();
         }
 
-        private static void CreateList(Delegate[] list)
+        /// <summary>
+        /// Method to draw the list. Each member field cannot be edited through the Unity Editor.
+        /// </summary>
+        /// <param name="list">The list of delegates to draw.</param>
+        private static void DrawList(Delegate[] list)
         {
             EditorGUI.BeginDisabledGroup(true);
                 
             foreach (var del in list)
             {
-                CreateField(del);
+                DrawField(del);
                 
                 EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
             }
@@ -40,7 +57,16 @@ namespace Incantium.Events.Editor
             EditorGUI.EndDisabledGroup();
         }
 
-        private static void CreateField(Delegate del)
+        /// <summary>
+        /// Method to draw the delegate to the Unity Editor. One of the following scenario's can occur:
+        /// <ul>
+        ///     <li>There is no target for the delegate due to the method being static.</li>
+        ///     <li>The target is an <see cref="MonoBehaviour"/>.</li>
+        ///     <li>The delegate is from another method.</li>
+        /// </ul>
+        /// </summary>
+        /// <param name="del">The delegate to draw.</param>
+        private static void DrawField(Delegate del)
         {
             EditorGUILayout.BeginHorizontal();
             
@@ -51,6 +77,6 @@ namespace Incantium.Events.Editor
             EditorGUILayout.LabelField(del.Method.Name);
                 
             EditorGUILayout.EndHorizontal();
-        } 
+        }
     }
 }

@@ -5,79 +5,86 @@ namespace Incantium.Events.Editor
 {
     public abstract class EventTruckEditor<T> : UnityEditor.Editor
     {
+        /// <inheritdoc cref="EventBusEditor.eventBus"/>
         private EventTruck<T> eventTruck;
+        
+        /// <inheritdoc cref="EventBusEditor.active"/>
+        private bool active => EditorApplication.isPlaying && eventTruck.onRequest != null;
 
-        private void OnEnable() =>  eventTruck = target as EventTruck<T>;
+        /// <inheritdoc cref="EventBusEditor.OnEnable"/>
+        private void OnEnable() => eventTruck = target as EventTruck<T>;
 
+        /// <inheritdoc cref="EventBusEditor.OnInspectorGUI"/>
         public override void OnInspectorGUI()
         {
-            var list = eventTruck.onRequest?.GetInvocationList();
-            
-            EventExtensions.InvocationList(list);
+            eventTruck.onRequest?.DrawInvocationList();
             InvokeButton();
             ResetButton();
         }
 
+        /// <inheritdoc cref="EventBusEditor{T}.InvokeButton"/>
         private void InvokeButton()
         {
-            if (!ButtonPressed("Request") || eventTruck.onRequest == null) return;
-
+            EditorGUI.BeginDisabledGroup(!active);
+            var pressed = GUILayout.Button("Request");
+            EditorGUI.EndDisabledGroup();
+            
+            if (!pressed || eventTruck.onRequest == null) return;
+            
             var result = eventTruck.onRequest.Invoke();
             
             Debug.Log(result);
         }
         
+        /// <inheritdoc cref="EventBusEditor.ResetButton"/>
         private void ResetButton()
         {
-            if (!ButtonPressed("Reset")) return;
+            EditorGUI.BeginDisabledGroup(!active);
+            var pressed = GUILayout.Button("Reset");
+            EditorGUI.EndDisabledGroup();
+            
+            if (!pressed || eventTruck.onRequest == null) return;
 
             eventTruck.onRequest = null;
-        }
-
-        private bool ButtonPressed(string text)
-        {
-            GUI.enabled = Application.isPlaying && eventTruck.onRequest != null;
-            var pressed = GUILayout.Button(text);
-            GUI.enabled = true;
-            
-            return pressed;
         }
     }
     
     public abstract class EventTruckEditor<T, TResult> : UnityEditor.Editor
     {
+        /// <inheritdoc cref="EventBusEditor.eventBus"/>
         private EventTruck<T, TResult> eventTruck;
+        
+        /// <inheritdoc cref="EventBusEditor{T}.parameter"/>
         private T param;
         
-        /// <summary>
-        /// Method to draw the property field of the parameter in this event bus.
-        /// </summary>
-        /// <param name="current">The saved parameter value.</param>
-        /// <returns>The set parameter value.</returns>
-        /// <remarks>Solely use <see cref="EditorGUILayout"/> to draw the property field.</remarks>
+        /// <inheritdoc cref="EventBusEditor.active"/>
+        private bool active => EditorApplication.isPlaying && eventTruck.onRequest != null;
+        
+        /// <inheritdoc cref="EventBusEditor{T}.DrawParameterField"/>
         protected abstract T DrawParameterField(T current);
 
-        private void OnEnable() =>  eventTruck = target as EventTruck<T, TResult>;
+        /// <inheritdoc cref="EventBusEditor.OnEnable"/>
+        private void OnEnable() => eventTruck = target as EventTruck<T, TResult>;
 
+        /// <inheritdoc cref="EventBusEditor.OnInspectorGUI"/>
         public override void OnInspectorGUI()
         {
-            var list = eventTruck.onRequest?.GetInvocationList();
-            
-            EventExtensions.InvocationList(list);
+            eventTruck.onRequest?.DrawInvocationList();
             InvokeButton();
             ResetButton();
         }
 
+        /// <inheritdoc cref="EventBusEditor{T}.InvokeButton"/>
         private void InvokeButton()
         {
             EditorGUILayout.BeginHorizontal();
+            EditorGUI.BeginDisabledGroup(!active);
             
-            GUI.enabled = Application.isPlaying && eventTruck.onRequest != null;
             var pressed = GUILayout.Button("Request");
             
             param = DrawParameterField(param);
-            GUI.enabled = true;
             
+            EditorGUI.EndDisabledGroup();
             EditorGUILayout.EndHorizontal();
             
             if (!pressed || eventTruck.onRequest == null) return;
@@ -87,56 +94,62 @@ namespace Incantium.Events.Editor
             Debug.Log(result);
         }
         
+        /// <inheritdoc cref="EventBusEditor.ResetButton"/>
         private void ResetButton()
         {
-            if (!ButtonPressed("Reset")) return;
+            EditorGUI.BeginDisabledGroup(!active);
+            var pressed = GUILayout.Button("Reset");
+            EditorGUI.EndDisabledGroup();
+            
+            if (!pressed || eventTruck.onRequest == null) return;
 
             eventTruck.onRequest = null;
-        }
-
-        private bool ButtonPressed(string text)
-        {
-            GUI.enabled = Application.isPlaying && eventTruck.onRequest != null;
-            var pressed = GUILayout.Button(text);
-            GUI.enabled = true;
-            
-            return pressed;
         }
     }
     
     public abstract class EventTruckEditor<T1, T2, TResult> : UnityEditor.Editor
     {
+        /// <inheritdoc cref="EventBusEditor.eventBus"/>
         private EventTruck<T1, T2, TResult> eventTruck;
+        
+        /// <inheritdoc cref="EventBusEditor{T}.parameter"/>
         private T1 param1;
+        
+        /// <inheritdoc cref="EventBusEditor{T}.parameter"/>
         private T2 param2;
         
+        /// <inheritdoc cref="EventBusEditor.active"/>
+        private bool active => EditorApplication.isPlaying && eventTruck.onRequest != null;
+        
+        /// <inheritdoc cref="EventBusEditor{T}.DrawParameterField"/>
         protected abstract T1 DrawParameterField1(T1 current);
         
+        /// <inheritdoc cref="EventBusEditor{T}.DrawParameterField"/>
         protected abstract T2 DrawParameterField2(T2 current);
         
-        private void OnEnable() =>  eventTruck = target as EventTruck<T1, T2, TResult>;
+        /// <inheritdoc cref="EventBusEditor.OnEnable"/>
+        private void OnEnable() => eventTruck = target as EventTruck<T1, T2, TResult>;
 
+        /// <inheritdoc cref="EventBusEditor.OnInspectorGUI"/>
         public override void OnInspectorGUI()
         {
-            var list = eventTruck.onRequest?.GetInvocationList();
-            
-            EventExtensions.InvocationList(list);
+            eventTruck.onRequest?.DrawInvocationList();
             InvokeButton();
             ResetButton();
         }
 
+        /// <inheritdoc cref="EventBusEditor{T}.InvokeButton"/>
         private void InvokeButton()
         {
             EditorGUILayout.BeginHorizontal();
+            EditorGUI.BeginDisabledGroup(!active);
             
-            GUI.enabled = Application.isPlaying && eventTruck.onRequest != null;
             var pressed = GUILayout.Button("Request");
             
             param1 = DrawParameterField1(param1);
             param2 = DrawParameterField2(param2);
             
-            GUI.enabled = true;
-            
+            EditorGUI.EndDisabledGroup();
             EditorGUILayout.EndHorizontal();
             
             if (!pressed || eventTruck.onRequest == null) return;
@@ -146,20 +159,16 @@ namespace Incantium.Events.Editor
             Debug.Log(result);
         }
         
+        /// <inheritdoc cref="EventBusEditor.ResetButton"/>
         private void ResetButton()
         {
-            if (!ButtonPressed("Reset")) return;
+            EditorGUI.BeginDisabledGroup(!active);
+            var pressed = GUILayout.Button("Reset");
+            EditorGUI.EndDisabledGroup();
+            
+            if (!pressed || eventTruck.onRequest == null) return;
 
             eventTruck.onRequest = null;
-        }
-
-        private bool ButtonPressed(string text)
-        {
-            GUI.enabled = Application.isPlaying && eventTruck.onRequest != null;
-            var pressed = GUILayout.Button(text);
-            GUI.enabled = true;
-            
-            return pressed;
         }
     }
 }

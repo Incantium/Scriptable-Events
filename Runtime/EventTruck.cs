@@ -8,8 +8,7 @@ namespace Incantium.Events
     /// without a direct dependency.
     /// </summary>
     /// <typeparam name="TResult">The return typing.</typeparam>
-    /// <seealso href="https://github.com/Incantium/Scriptable-Event/blob/main/Documentation~/EventTruck.md">EventTruck
-    /// </seealso>
+    /// <seealso href="https://github.com/Incantium/Scriptable-Event/blob/main/API~/EventTruck.md">EventTruck</seealso>
     public abstract class EventTruck<TResult> : ScriptableObject
     {
         /// <inheritdoc cref="EventBus.onSend"/>
@@ -22,8 +21,7 @@ namespace Incantium.Events
     /// </summary>
     /// <typeparam name="T">The parameter typing.</typeparam>
     /// <typeparam name="TResult">The return typing.</typeparam>
-    /// <seealso href="https://github.com/Incantium/Scriptable-Event/blob/main/Documentation~/EventTruck.md">EventTruck
-    /// </seealso>
+    /// <seealso href="https://github.com/Incantium/Scriptable-Event/blob/main/API~/EventTruck.md">EventTruck</seealso>
     public abstract class EventTruck<T, TResult> : ScriptableObject
     {
         /// <inheritdoc cref="EventBus.onSend"/>
@@ -37,8 +35,7 @@ namespace Incantium.Events
     /// <typeparam name="T1">The first parameter typing.</typeparam>
     /// <typeparam name="T2">The second parameter typing.</typeparam>
     /// <typeparam name="TResult">The return typing.</typeparam>
-    /// <seealso href="https://github.com/Incantium/Scriptable-Event/blob/main/Documentation~/EventTruck.md">EventTruck
-    /// </seealso>
+    /// <seealso href="https://github.com/Incantium/Scriptable-Event/blob/main/API~/EventTruck.md">EventTruck</seealso>
     public abstract class EventTruck<T1, T2, TResult> : ScriptableObject
     {
         /// <inheritdoc cref="EventBus.onSend"/>
