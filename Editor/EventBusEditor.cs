@@ -17,7 +17,7 @@ namespace Incantium.Events.Editor
         /// <summary>
         /// True if the Unity Editor is in play mode and there are methods connected to the event, otherwise false.
         /// </summary>
-        private bool active => EditorApplication.isPlaying && eventBus.onSend != null;
+        private bool active => eventBus.count > 0;
 
         /// <summary>
         /// Method called when the event scriptable object comes into focus. This will save the correct event for later
@@ -30,14 +30,14 @@ namespace Incantium.Events.Editor
         /// <ul>
         ///     <li>Firstly, it will draw the methods connected to the scriptable event.</li>
         ///     <li>Secondly, it will draw an invoke button to invoke the scriptable event from the
-        ///     <see cref="ScriptableObject"/></li>
+        ///     <see cref="ScriptableObject"/>.</li>
         ///     <li>Thirdly, it will draw a reset button to remove all methods from the scriptable event from the
-        ///     <see cref="ScriptableObject"/></li>
+        ///     <see cref="ScriptableObject"/>.</li>
         /// </ul>
         /// </summary>
         public override void OnInspectorGUI()
         {
-            eventBus.onSend?.DrawInvocationList();
+            EventExtensions.DrawInvocationList(eventBus.action);
             InvokeButton();
             ResetButton();
         }
@@ -49,12 +49,12 @@ namespace Incantium.Events.Editor
         private void InvokeButton()
         {
             EditorGUI.BeginDisabledGroup(!active);
-            var pressed = GUILayout.Button("Send");
+            var pressed = GUILayout.Button(Styles.SEND);
             EditorGUI.EndDisabledGroup();
             
-            if (!pressed || eventBus.onSend == null) return;
+            if (!pressed) return;
             
-            eventBus.onSend?.Invoke();
+            eventBus.Send();
         }
 
         /// <summary>
@@ -64,12 +64,12 @@ namespace Incantium.Events.Editor
         private void ResetButton()
         {
             EditorGUI.BeginDisabledGroup(!active);
-            var pressed = GUILayout.Button("Reset");
+            var pressed = GUILayout.Button(Styles.RESET);
             EditorGUI.EndDisabledGroup();
             
-            if (!pressed || eventBus.onSend == null) return;
+            if (!pressed) return;
 
-            eventBus.onSend = null;
+            eventBus.Reset();
         }
     }
     
@@ -83,12 +83,12 @@ namespace Incantium.Events.Editor
         private EventBus<T> eventBus;
         
         /// <summary>
-        /// Temporary field to store data used for invoking the scriptable event.
+        /// A temporary field to store data used for invoking the scriptable event.
         /// </summary>
         private T parameter;
         
         /// <inheritdoc cref="EventBusEditor.active"/>
-        private bool active => EditorApplication.isPlaying && eventBus.onSend != null;
+        private bool active => eventBus.count > 0;
 
         /// <summary>
         /// Method to draw the property field of the parameter.
@@ -104,7 +104,7 @@ namespace Incantium.Events.Editor
         /// <inheritdoc cref="EventBusEditor.OnInspectorGUI"/>
         public override void OnInspectorGUI()
         {
-            eventBus.onSend?.DrawInvocationList();
+            EventExtensions.DrawInvocationList(eventBus.action);
             InvokeButton();
             ResetButton();
         }
@@ -115,28 +115,28 @@ namespace Incantium.Events.Editor
             EditorGUILayout.BeginHorizontal();
             EditorGUI.BeginDisabledGroup(!active);
             
-            var pressed = GUILayout.Button("Send");
+            var pressed = GUILayout.Button(Styles.SEND);
             
             parameter = DrawParameterField(parameter);
             
             EditorGUI.EndDisabledGroup();
             EditorGUILayout.EndHorizontal();
             
-            if (!pressed || eventBus.onSend == null) return;
+            if (!pressed) return;
             
-            eventBus.onSend?.Invoke(parameter);
+            eventBus.Send(parameter);
         }
 
         /// <inheritdoc cref="EventBusEditor.ResetButton"/>
         private void ResetButton()
         {
             EditorGUI.BeginDisabledGroup(!active);
-            var pressed = GUILayout.Button("Reset");
+            var pressed = GUILayout.Button(Styles.RESET);
             EditorGUI.EndDisabledGroup();
             
-            if (!pressed || eventBus.onSend == null) return;
+            if (!pressed) return;
 
-            eventBus.onSend = null;
+            eventBus.Reset();
         }
     }
     
@@ -157,7 +157,7 @@ namespace Incantium.Events.Editor
         private T2 param2;
         
         /// <inheritdoc cref="EventBusEditor.active"/>
-        private bool active => EditorApplication.isPlaying && eventBus.onSend != null;
+        private bool active => eventBus.count > 0;
 
         /// <inheritdoc cref="EventBusEditor{T}.DrawParameterField"/>
         protected abstract T1 DrawParameterField1(T1 current);
@@ -171,7 +171,7 @@ namespace Incantium.Events.Editor
         /// <inheritdoc cref="EventBusEditor.OnInspectorGUI"/>
         public override void OnInspectorGUI()
         {
-            eventBus.onSend?.DrawInvocationList();
+            EventExtensions.DrawInvocationList(eventBus.action);
             InvokeButton();
             ResetButton();
         }
@@ -181,28 +181,28 @@ namespace Incantium.Events.Editor
         {
             EditorGUI.BeginDisabledGroup(!active);
             
-            var pressed = GUILayout.Button("Send");
+            var pressed = GUILayout.Button(Styles.SEND);
             
             param1 = DrawParameterField1(param1);
             param2 = DrawParameterField2(param2);
             
             EditorGUI.EndDisabledGroup();
             
-            if (!pressed || eventBus.onSend == null) return;
+            if (!pressed) return;
             
-            eventBus.onSend?.Invoke(param1, param2);
+            eventBus.Send(param1, param2);
         }
 
         /// <inheritdoc cref="EventBusEditor.ResetButton"/>
         private void ResetButton()
         {
             EditorGUI.BeginDisabledGroup(!active);
-            var pressed = GUILayout.Button("Reset");
+            var pressed = GUILayout.Button(Styles.RESET);
             EditorGUI.EndDisabledGroup();
             
-            if (!pressed || eventBus.onSend == null) return;
+            if (!pressed) return;
 
-            eventBus.onSend = null;
+            eventBus.Reset();
         }
     }
     
@@ -227,7 +227,7 @@ namespace Incantium.Events.Editor
         private T3 param3;
         
         /// <inheritdoc cref="EventBusEditor.active"/>
-        private bool active => EditorApplication.isPlaying && eventBus.onSend != null;
+        private bool active => eventBus.count > 0;
 
         /// <inheritdoc cref="EventBusEditor{T}.DrawParameterField"/>
         protected abstract T1 DrawParameterField1(T1 current);
@@ -244,7 +244,7 @@ namespace Incantium.Events.Editor
         /// <inheritdoc cref="EventBusEditor.OnInspectorGUI"/>
         public override void OnInspectorGUI()
         {
-            eventBus.onSend?.DrawInvocationList();
+            EventExtensions.DrawInvocationList(eventBus.action);
             InvokeButton();
             ResetButton();
         }
@@ -254,7 +254,7 @@ namespace Incantium.Events.Editor
         {
             EditorGUI.BeginDisabledGroup(!active);
             
-            var pressed = GUILayout.Button("Send");
+            var pressed = GUILayout.Button(Styles.SEND);
             
             param1 = DrawParameterField1(param1);
             param2 = DrawParameterField2(param2);
@@ -262,21 +262,21 @@ namespace Incantium.Events.Editor
             
             EditorGUI.EndDisabledGroup();
             
-            if (!pressed || eventBus.onSend == null) return;
+            if (!pressed) return;
             
-            eventBus.onSend?.Invoke(param1, param2, param3);
+            eventBus.Send(param1, param2, param3);
         }
 
         /// <inheritdoc cref="EventBusEditor.ResetButton"/>
         private void ResetButton()
         {
             EditorGUI.BeginDisabledGroup(!active);
-            var pressed = GUILayout.Button("Reset");
+            var pressed = GUILayout.Button(Styles.RESET);
             EditorGUI.EndDisabledGroup();
             
-            if (!pressed || eventBus.onSend == null) return;
+            if (!pressed) return;
 
-            eventBus.onSend = null;
+            eventBus.Reset();
         }
     }
 }

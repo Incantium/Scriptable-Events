@@ -3,13 +3,16 @@ using UnityEngine;
 
 namespace Incantium.Events.Editor
 {
+    /// <summary>
+    /// Class representing the Unity Editor inspector for the default <see cref="EventTruck{T}"/> implementation.
+    /// </summary>
     public abstract class EventTruckEditor<T> : UnityEditor.Editor
     {
         /// <inheritdoc cref="EventBusEditor.eventBus"/>
         private EventTruck<T> eventTruck;
         
         /// <inheritdoc cref="EventBusEditor.active"/>
-        private bool active => EditorApplication.isPlaying && eventTruck.onRequest != null;
+        private bool active => eventTruck.count > 0;
 
         /// <inheritdoc cref="EventBusEditor.OnEnable"/>
         private void OnEnable() => eventTruck = target as EventTruck<T>;
@@ -17,7 +20,7 @@ namespace Incantium.Events.Editor
         /// <inheritdoc cref="EventBusEditor.OnInspectorGUI"/>
         public override void OnInspectorGUI()
         {
-            eventTruck.onRequest?.DrawInvocationList();
+            EventExtensions.DrawInvocationList(eventTruck.action);
             InvokeButton();
             ResetButton();
         }
@@ -26,12 +29,12 @@ namespace Incantium.Events.Editor
         private void InvokeButton()
         {
             EditorGUI.BeginDisabledGroup(!active);
-            var pressed = GUILayout.Button("Request");
+            var pressed = GUILayout.Button(Styles.REQUEST);
             EditorGUI.EndDisabledGroup();
             
-            if (!pressed || eventTruck.onRequest == null) return;
+            if (!pressed) return;
             
-            var result = eventTruck.onRequest.Invoke();
+            var result = eventTruck.Request();
             
             Debug.Log(result);
         }
@@ -40,15 +43,18 @@ namespace Incantium.Events.Editor
         private void ResetButton()
         {
             EditorGUI.BeginDisabledGroup(!active);
-            var pressed = GUILayout.Button("Reset");
+            var pressed = GUILayout.Button(Styles.RESET);
             EditorGUI.EndDisabledGroup();
             
-            if (!pressed || eventTruck.onRequest == null) return;
+            if (!pressed) return;
 
-            eventTruck.onRequest = null;
+            eventTruck.Reset();
         }
     }
     
+    /// <summary>
+    /// Class representing the Unity Editor inspector for the default <see cref="EventTruck{T,T}"/> implementation.
+    /// </summary>
     public abstract class EventTruckEditor<T, TResult> : UnityEditor.Editor
     {
         /// <inheritdoc cref="EventBusEditor.eventBus"/>
@@ -58,7 +64,7 @@ namespace Incantium.Events.Editor
         private T param;
         
         /// <inheritdoc cref="EventBusEditor.active"/>
-        private bool active => EditorApplication.isPlaying && eventTruck.onRequest != null;
+        private bool active => eventTruck.count > 0;
         
         /// <inheritdoc cref="EventBusEditor{T}.DrawParameterField"/>
         protected abstract T DrawParameterField(T current);
@@ -69,7 +75,7 @@ namespace Incantium.Events.Editor
         /// <inheritdoc cref="EventBusEditor.OnInspectorGUI"/>
         public override void OnInspectorGUI()
         {
-            eventTruck.onRequest?.DrawInvocationList();
+            EventExtensions.DrawInvocationList(eventTruck.action);
             InvokeButton();
             ResetButton();
         }
@@ -80,16 +86,16 @@ namespace Incantium.Events.Editor
             EditorGUILayout.BeginHorizontal();
             EditorGUI.BeginDisabledGroup(!active);
             
-            var pressed = GUILayout.Button("Request");
+            var pressed = GUILayout.Button(Styles.REQUEST);
             
             param = DrawParameterField(param);
             
             EditorGUI.EndDisabledGroup();
             EditorGUILayout.EndHorizontal();
             
-            if (!pressed || eventTruck.onRequest == null) return;
+            if (!pressed) return;
             
-            var result = eventTruck.onRequest.Invoke(param);
+            var result = eventTruck.Request(param);
             
             Debug.Log(result);
         }
@@ -98,15 +104,18 @@ namespace Incantium.Events.Editor
         private void ResetButton()
         {
             EditorGUI.BeginDisabledGroup(!active);
-            var pressed = GUILayout.Button("Reset");
+            var pressed = GUILayout.Button(Styles.RESET);
             EditorGUI.EndDisabledGroup();
             
-            if (!pressed || eventTruck.onRequest == null) return;
+            if (!pressed) return;
 
-            eventTruck.onRequest = null;
+            eventTruck.Reset();
         }
     }
     
+    /// <summary>
+    /// Class representing the Unity Editor inspector for the default <see cref="EventTruck{T,T,T}"/> implementation.
+    /// </summary>
     public abstract class EventTruckEditor<T1, T2, TResult> : UnityEditor.Editor
     {
         /// <inheritdoc cref="EventBusEditor.eventBus"/>
@@ -119,7 +128,7 @@ namespace Incantium.Events.Editor
         private T2 param2;
         
         /// <inheritdoc cref="EventBusEditor.active"/>
-        private bool active => EditorApplication.isPlaying && eventTruck.onRequest != null;
+        private bool active => eventTruck.count > 0;
         
         /// <inheritdoc cref="EventBusEditor{T}.DrawParameterField"/>
         protected abstract T1 DrawParameterField1(T1 current);
@@ -133,7 +142,7 @@ namespace Incantium.Events.Editor
         /// <inheritdoc cref="EventBusEditor.OnInspectorGUI"/>
         public override void OnInspectorGUI()
         {
-            eventTruck.onRequest?.DrawInvocationList();
+            EventExtensions.DrawInvocationList(eventTruck.action);
             InvokeButton();
             ResetButton();
         }
@@ -144,7 +153,7 @@ namespace Incantium.Events.Editor
             EditorGUILayout.BeginHorizontal();
             EditorGUI.BeginDisabledGroup(!active);
             
-            var pressed = GUILayout.Button("Request");
+            var pressed = GUILayout.Button(Styles.REQUEST);
             
             param1 = DrawParameterField1(param1);
             param2 = DrawParameterField2(param2);
@@ -152,9 +161,9 @@ namespace Incantium.Events.Editor
             EditorGUI.EndDisabledGroup();
             EditorGUILayout.EndHorizontal();
             
-            if (!pressed || eventTruck.onRequest == null) return;
+            if (!pressed) return;
             
-            var result = eventTruck.onRequest.Invoke(param1, param2);
+            var result = eventTruck.Request(param1, param2);
             
             Debug.Log(result);
         }
@@ -163,12 +172,12 @@ namespace Incantium.Events.Editor
         private void ResetButton()
         {
             EditorGUI.BeginDisabledGroup(!active);
-            var pressed = GUILayout.Button("Reset");
+            var pressed = GUILayout.Button(Styles.RESET);
             EditorGUI.EndDisabledGroup();
             
-            if (!pressed || eventTruck.onRequest == null) return;
+            if (!pressed) return;
 
-            eventTruck.onRequest = null;
+            eventTruck.Reset();
         }
     }
 }
