@@ -22,10 +22,11 @@ namespace Incantium.Events.Editor
         {
             EventExtensions.DrawInvocationList(eventTruck.action);
             InvokeButton();
+            InvokeAllButton();
             ResetButton();
         }
 
-        /// <inheritdoc cref="EventBusEditor{T}.InvokeButton"/>
+        /// <inheritdoc cref="EventBusEditor.InvokeButton"/>
         private void InvokeButton()
         {
             EditorGUI.BeginDisabledGroup(!active);
@@ -37,6 +38,23 @@ namespace Incantium.Events.Editor
             var result = eventTruck.Request();
             
             Debug.Log(result);
+        }
+        
+        /// <summary>
+        /// Method to draw the invoke all button alongside additional parameter fields if necessary. When the scriptable
+        /// event is in use, the user can click to invoke the event from the <see cref="ScriptableObject"/>.
+        /// </summary>
+        private void InvokeAllButton()
+        {
+            EditorGUI.BeginDisabledGroup(!active);
+            var pressed = GUILayout.Button(Styles.REQUEST_ALL);
+            EditorGUI.EndDisabledGroup();
+            
+            if (!pressed) return;
+            
+            var result = eventTruck.RequestAll();
+            
+            Debug.Log(string.Join(',', result));
         }
         
         /// <inheritdoc cref="EventBusEditor.ResetButton"/>
@@ -77,10 +95,11 @@ namespace Incantium.Events.Editor
         {
             EventExtensions.DrawInvocationList(eventTruck.action);
             InvokeButton();
+            InvokeAllButton();
             ResetButton();
         }
 
-        /// <inheritdoc cref="EventBusEditor{T}.InvokeButton"/>
+        /// <inheritdoc cref="EventBusEditor.InvokeButton"/>
         private void InvokeButton()
         {
             EditorGUILayout.BeginHorizontal();
@@ -98,6 +117,26 @@ namespace Incantium.Events.Editor
             var result = eventTruck.Request(param);
             
             Debug.Log(result);
+        }
+        
+        /// <inheritdoc cref="EventTruckEditor{T}.InvokeAllButton"/>
+        private void InvokeAllButton()
+        {
+            EditorGUILayout.BeginHorizontal();
+            EditorGUI.BeginDisabledGroup(!active);
+            
+            var pressed = GUILayout.Button(Styles.REQUEST);
+            
+            param = DrawParameterField(param);
+            
+            EditorGUI.EndDisabledGroup();
+            EditorGUILayout.EndHorizontal();
+            
+            if (!pressed) return;
+            
+            var result = eventTruck.RequestAll(param);
+            
+            Debug.Log(string.Join(',', result));
         }
         
         /// <inheritdoc cref="EventBusEditor.ResetButton"/>
@@ -144,10 +183,11 @@ namespace Incantium.Events.Editor
         {
             EventExtensions.DrawInvocationList(eventTruck.action);
             InvokeButton();
+            InvokeAllButton();
             ResetButton();
         }
 
-        /// <inheritdoc cref="EventBusEditor{T}.InvokeButton"/>
+        /// <inheritdoc cref="EventBusEditor.InvokeButton"/>
         private void InvokeButton()
         {
             EditorGUILayout.BeginHorizontal();
@@ -166,6 +206,27 @@ namespace Incantium.Events.Editor
             var result = eventTruck.Request(param1, param2);
             
             Debug.Log(result);
+        }
+        
+        /// <inheritdoc cref="EventTruckEditor{T}.InvokeAllButton"/>
+        private void InvokeAllButton()
+        {
+            EditorGUILayout.BeginHorizontal();
+            EditorGUI.BeginDisabledGroup(!active);
+            
+            var pressed = GUILayout.Button(Styles.REQUEST);
+            
+            param1 = DrawParameterField1(param1);
+            param2 = DrawParameterField2(param2);
+            
+            EditorGUI.EndDisabledGroup();
+            EditorGUILayout.EndHorizontal();
+            
+            if (!pressed) return;
+            
+            var result = eventTruck.RequestAll(param1, param2);
+            
+            Debug.Log(string.Join(',', result));
         }
         
         /// <inheritdoc cref="EventBusEditor.ResetButton"/>

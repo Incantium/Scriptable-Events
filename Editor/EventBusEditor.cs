@@ -109,7 +109,7 @@ namespace Incantium.Events.Editor
             ResetButton();
         }
         
-        /// <inheritdoc cref="EventBusEditor{T}.InvokeButton"/>
+        /// <inheritdoc cref="EventBusEditor.InvokeButton"/>
         private void InvokeButton()
         {
             EditorGUILayout.BeginHorizontal();
@@ -176,7 +176,7 @@ namespace Incantium.Events.Editor
             ResetButton();
         }
         
-        /// <inheritdoc cref="EventBusEditor{T}.InvokeButton"/>
+        /// <inheritdoc cref="EventBusEditor.InvokeButton"/>
         private void InvokeButton()
         {
             EditorGUI.BeginDisabledGroup(!active);
@@ -249,7 +249,7 @@ namespace Incantium.Events.Editor
             ResetButton();
         }
         
-        /// <inheritdoc cref="EventBusEditor{T}.InvokeButton"/>
+        /// <inheritdoc cref="EventBusEditor.InvokeButton"/>
         private void InvokeButton()
         {
             EditorGUI.BeginDisabledGroup(!active);

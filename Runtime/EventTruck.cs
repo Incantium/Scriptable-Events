@@ -24,8 +24,30 @@ namespace Incantium.Events
         /// <summary>
         /// Method to call a method subscribed to <see cref="onRespond"/> for an answer.
         /// </summary>
-        /// <returns>The answer from the first connected object if possible.</returns>
+        /// <returns>The answer from the last connected object if possible.</returns>
         public TResult Request() => onRespond != null ? onRespond() : default;
+        
+        /// <summary>
+        /// Method to call all methods subscribed to <see cref="onRespond"/> for an answer.
+        /// </summary>
+        /// <returns>An array of answers from each object.</returns>
+        public TResult[] RequestAll()
+        {
+            var list = onRespond?.GetInvocationList();
+            
+            if (list == null) return Array.Empty<TResult>();
+            
+            var results = new TResult[list.Length];
+
+            for (var i = 0; i < list.Length; i++)
+            {
+                if (list[i] is not Func<TResult> function) continue;
+                
+                results[i] = function.Invoke();
+            }
+
+            return results;
+        }
 
         /// <inheritdoc cref="EventBus.Reset"/>
         public void Reset() => onRespond = null;
@@ -55,6 +77,26 @@ namespace Incantium.Events
         /// </summary>
         /// <param name="message">The message to send with the event.</param>
         public TResult Request(T message) => onRespond != null ? onRespond(message) : default;
+        
+        /// <inheritdoc cref="EventTruck{TResult}.RequestAll"/>
+        /// <param name="message">The message to send with the event.</param>
+        public TResult[] RequestAll(T message)
+        {
+            var list = onRespond?.GetInvocationList();
+            
+            if (list == null) return Array.Empty<TResult>();
+            
+            var results = new TResult[list.Length];
+
+            for (var i = 0; i < list.Length; i++)
+            {
+                if (list[i] is not Func<T, TResult> function) continue;
+                
+                results[i] = function.Invoke(message);
+            }
+
+            return results;
+        }
 
         /// <inheritdoc cref="EventBus.Reset"/>
         public void Reset() => onRespond = null;
@@ -83,6 +125,27 @@ namespace Incantium.Events
         /// <param name="a">The first message to send with the event.</param>
         /// <param name="b">The second message to send with the event.</param>
         public TResult Request(T1 a, T2 b) => onRespond != null ? onRespond(a, b) : default;
+        
+        /// <inheritdoc cref="EventTruck{TResult}.RequestAll"/>
+        /// <param name="a">The first message to send with the event.</param>
+        /// <param name="b">The second message to send with the event.</param>
+        public TResult[] RequestAll(T1 a, T2 b)
+        {
+            var list = onRespond?.GetInvocationList();
+            
+            if (list == null) return Array.Empty<TResult>();
+            
+            var results = new TResult[list.Length];
+
+            for (var i = 0; i < list.Length; i++)
+            {
+                if (list[i] is not Func<T1, T2, TResult> function) continue;
+                
+                results[i] = function.Invoke(a, b);
+            }
+
+            return results;
+        }
 
         /// <inheritdoc cref="EventBus.Reset"/>
         public void Reset() => onRespond = null;
