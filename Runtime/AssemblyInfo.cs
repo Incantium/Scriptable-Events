@@ -1,1 +1,1 @@
-﻿[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("Incantium.ScriptableEvent.Editor")]
+﻿[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("Incantium.ScriptableEvents.Editor")]

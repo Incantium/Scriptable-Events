@@ -1,8 +1,8 @@
 {
-  "name": "com.incantium.scriptable-event",
+  "name": "com.incantium.scriptable-events",
   "version": "0.1.0",
-  "displayName": "Scriptable Event",
-  "description": "Create, test, and manage ScriptableObject events.",
+  "displayName": "Scriptable Events",
+  "description": "Use ScriptableObjects with events to send messages throughout your game.",
   "unity": "2022.3",
   "author": {
     "name": "Incantium",

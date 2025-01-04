@@ -1,5 +1,5 @@
 {
-    "name": "Incantium.ScriptableEvent",
+    "name": "Incantium.ScriptableEvents",
     "rootNamespace": "Incantium.Events",
     "references": [],
     "includePlatforms": [],

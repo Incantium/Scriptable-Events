@@ -1,5 +1,5 @@
 {
-    "name": "Incantium.ScriptableEvent.Editor",
+    "name": "Incantium.ScriptableEvents.Editor",
     "rootNamespace": "Incantium.Events",
     "references": [
         "GUID:a60b16282776a7a4f8172a6466709d25"
