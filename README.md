@@ -36,11 +36,11 @@ implementation for a pre-build event channel. For a custom event channel, see st
 
 In this short tutorial, we are going to create an event channel whereby the player updates the health bar within the UI.
 
-1. [Create a new instance.md](Documentation~/1.%20Create%20a%20new%20instance.md)
-2. [Listen to the event.md](Documentation~/2.%20Listen%20to%20the%20event.md)
-3. [Call the event.md](Documentation~/3.%20Call%20the%20event.md)
-4. [Custom events.md](Documentation~/4.%20Custom%20events.md)
-5. [Custom inspector.md](Documentation~/5.%20Custom%20inspector.md)
+1. [Create a new instance](Documentation~/1.%20Create%20a%20new%20instance.md)
+2. [Listen to the event](Documentation~/2.%20Listen%20to%20the%20event.md)
+3. [Call the event](Documentation~/3.%20Call%20the%20event.md)
+4. [Custom events](Documentation~/4.%20Custom%20events.md)
+5. [Custom inspector](Documentation~/5.%20Custom%20inspector.md)
 
 ## Advanced topics
 
