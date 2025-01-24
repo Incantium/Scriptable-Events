@@ -15,7 +15,7 @@ multiple scripts communicate without needing to know each other.
 - Open the [Package Manager](https://docs.unity3d.com/Manual/upm-ui.html) in a Unity project.
 - Click on the "+" button to add a new package.
 - Click on "Install package from git URL...".
-- Put in `https://github.com/Incantium/Scriptable-Event.git`.
+- Put in `https://github.com/Incantium/Scriptable-Events.git`.
 - Click on "Install" or press enter.
 - Enjoy!
 
