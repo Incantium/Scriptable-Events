@@ -75,7 +75,7 @@ namespace Incantium.Events.Editor.Send
     }
     
     /// <summary>
-    /// Class representing the Unity Editor inspector for the default <see cref="EventBus{T}"/> implementation.
+    /// Class representing the Unity Editor inspector for the <see cref="EventBus{T}"/> implementation.
     /// </summary>
     /// <typeparam name="T">The first parameter typing.</typeparam>
     public abstract class EventBusEditor<T> : UnityEditor.Editor
@@ -142,7 +142,7 @@ namespace Incantium.Events.Editor.Send
     }
     
     /// <summary>
-    /// Class representing the Unity Editor inspector for the default <see cref="EventBus{T,T}"/> implementation.
+    /// Class representing the Unity Editor inspector for the <see cref="EventBus{T,T}"/> implementation.
     /// </summary>
     /// <typeparam name="T1">The first parameter typing.</typeparam>
     /// <typeparam name="T2">The second parameter typing.</typeparam>
@@ -208,7 +208,7 @@ namespace Incantium.Events.Editor.Send
     }
     
     /// <summary>
-    /// Class representing the Unity Editor inspector for the default <see cref="EventBus{T,T,T}"/> implementation.
+    /// Class representing the Unity Editor inspector for the <see cref="EventBus{T,T,T}"/> implementation.
     /// </summary>
     /// <typeparam name="T1">The first parameter typing.</typeparam>
     /// <typeparam name="T2">The second parameter typing.</typeparam>

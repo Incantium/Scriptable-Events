@@ -47,7 +47,7 @@ In this short tutorial, we are going to create an event channel whereby the play
 ### What is an event channel within this package?
 
 Simply said, an event channel in this package is a 
-[ScriptableObjects](https://docs.unity3d.com/ScriptReference/ScriptableObject.html) that contains one 
+[ScriptableObject](https://docs.unity3d.com/ScriptReference/ScriptableObject.html) that contains one 
 [C# event](https://learn.microsoft.com/en-us/dotnet/standard/events/).
 
 Events in C# are based on the [observer design pattern](https://refactoring.guru/design-patterns/observer), which 
@@ -90,6 +90,8 @@ This package includes four different event bus abstractions and multiple impleme
 The [event truck](API~/EventTruck.md) is a **request** event channel. This kind of event channel can be used to request
 a value from one (or multiple) other receivers.
 
+This package includes three different event truck abstractions and multiple implementations. These are:
+
 - A single-typed event truck. This event truck can be used to request one value from another script(s). This package 
   includes pre-build implementations for boolean, integer, float, double,
   [Vector2](https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Vector2.html),
@@ -103,12 +105,10 @@ a value from one (or multiple) other receivers.
 
 ## References
 
-| Class                                        | Description                                                            |
-|----------------------------------------------|------------------------------------------------------------------------|
-| [EventBus](API~/EventBus.md)                 |                                                                        |
-| [EventBusEditor](API~/EventBusEditor.md)     |                                                                        |
-| [EventTruck](API~/EventTruck.md)             |                                                                        |
-| [EventTruckEditor](API~/EventTruckEditor.md) |                                                                        |
+| Class                                        | Description                                                 |
+|----------------------------------------------|-------------------------------------------------------------|
+| [EventBus](API~/EventBus.md)                 | Abstract class for a sending event channel.                 |
+| [EventTruck](API~/EventTruck.md)             | Abstract class for a sending requesting channel.            |
 
 ## Frequently Asked Questions
 
@@ -130,16 +130,16 @@ shout, but B is not required to answer. This is the effect of the event channels
 
 In essence, the event channels decouple the code to make it easier testable.
 
-### When should I use an event channel and when shouldn't I?
+### When should I use an event channel?
 
 Here below is the general rule you should use when deciding when to use an event channel:
 
 > "Only use an event channel when two separate codebases at a large distance needs to communicate."
 
 Within this rule, "a large distance" means that the two codebases exists in their own metaphorical space and do not 
-naturally work together. An example is the player scripts and the UI. In many games, the UI must be updated when the
-player receives damage. However, the codebase of the player and the UI are separate from each other, often even build
-by different teams. In this context, it is natural to use an event channel.
+naturally work together. An example is the player and the UI. In many games, the UI must be updated when the player 
+receives damage. However, the codebase of the player and the UI are separate from each other, often even build by 
+different teams. In this context, it is natural to use an event channel.
 
 The second reason to use an event channel is when the two codebases are separated within different scenes. The usage of
 [additive scenes](https://docs.unity3d.com/6000.0/Documentation/ScriptReference/SceneManagement.LoadSceneMode.Additive.html)
@@ -157,6 +157,25 @@ However, event channels are not always the most optimal solution. In truth, all 
 method invocation, as it is not apparent if a method listens, if any at all. This problem is mitigated by the custom
 inspector implemented for all event channel types. However, this inspector only shows the methods that listen, in
 runtime, when they start listening, and not sooner. This is the largest drawback of the event channel.
+
+### When shouldn't I use an event channel?
+
+In essence, when other reliable ways are possible to communicate between scripts. Event channels cannot differentiate
+between which listens or how many listen. Because of this, you need a new event channel for each one of them if you
+want to call them separately. In such cases, you better should use other alternatives.
+
+A couple of examples where not to use an event channel are:
+
+- Scripts on the same [GameObject](https://docs.unity3d.com/6000.0/Documentation/ScriptReference/GameObject.html). In
+  these cases, just use 
+  [GetComponent](https://docs.unity3d.com/6000.0/Documentation/ScriptReference/GameObject.GetComponent.html), as it is
+  more widely used. This also is true for close-proximity (in parent, in children).
+- Communication on hit, like with 
+  [OnCollisionEnter](https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Collider.OnCollisionEnter.html) or
+  [OnTriggerEnter](https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Collider.OnTriggerEnter.html). In these
+  scenarios, it is better to use 
+  [TryGetComponent](https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Component.TryGetComponent.html) in 
+  combination with an interface.
 
 ### Why are sending event channels called a "bus" and requesting a "truck"?
 

@@ -1,6 +1,6 @@
-﻿# [EventBus](../Runtime/EventBus.cs)
+﻿# [EventBus](../Runtime/Send/EventBus.cs)
 
-Class in `Incantium.Events` | Assembled in [`Incantium.ScriptableEvent`](../README.md)
+Class in `Incantium.Events.Send` | Assembled in [`Incantium.ScriptableEvents`](../README.md)
 
 Extends [`ScriptableObject`](https://docs.unity3d.com/ScriptReference/ScriptableObject.html)
 
@@ -15,8 +15,6 @@ The main use case is to decouple code that needs to be developed and tested sepa
 objects that are depended on other systems (through references) cannot be tested in isolation without their references
 being set. The EventBus solves this problem by creating a common point to which the dependent system are coupled.
 
-![EventBusDiagram](../Images~/EventBusDiagram.png)
-
 As seen in the image at the top, the EventBus 
 [ScriptableObject](https://docs.unity3d.com/6000.0/Documentation/Manual/class-scriptableobject.html) has a build-in
 custom inspector where every subscription is visible. It also has an Invoke button to invoke every subscriber from the 
@@ -25,7 +23,7 @@ inspector for testing purposes, alongside a Reset button to remove all subscript
 ## Example
 
 ```csharp
-using Incantium.Events;
+using Incantium.Events.Send;
 using UnityEngine;
 
 public class ExampleClass : MonoBehaviour
@@ -54,6 +52,20 @@ public class ExampleClass : MonoBehaviour
 
 ## Variables
 
-### :green_book: `UnityAction` onSend
+### :green_book: `Action` onReceive;
 
-Subscribe to this event to send and receive notifications.
+Event, when subscribed to, will be notified when something else [send](#green_book-void-send) a message.
+
+### :green_book: `int` count
+
+Amount of event handlers connected to this event.
+
+## Methods
+
+### :green_book: `void` Send()
+
+Method to call all methods subscribed to [onReceive](#green_book-action-onreceive) to deliver a message.
+
+### :green_book: `void` Reset()
+
+Method to remove all methods from this event.

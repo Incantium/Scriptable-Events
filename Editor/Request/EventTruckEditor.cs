@@ -6,18 +6,18 @@ using UnityEngine;
 namespace Incantium.Events.Editor.Request
 {
     /// <summary>
-    /// Class representing the Unity Editor inspector for the default <see cref="EventTruck{T}"/> implementation.
+    /// Class representing the Unity Editor inspector for the <see cref="EventTruck{T}"/> implementation.
     /// </summary>
-    public abstract class EventTruckEditor<T> : UnityEditor.Editor
+    public abstract class EventTruckEditor<TResult> : UnityEditor.Editor
     {
         /// <inheritdoc cref="EventBusEditor.eventBus"/>
-        private EventTruck<T> eventTruck;
+        private EventTruck<TResult> eventTruck;
         
         /// <inheritdoc cref="EventBusEditor.active"/>
         private bool active => eventTruck.count > 0;
 
         /// <inheritdoc cref="EventBusEditor.OnEnable"/>
-        private void OnEnable() => eventTruck = target as EventTruck<T>;
+        private void OnEnable() => eventTruck = target as EventTruck<TResult>;
 
         /// <inheritdoc cref="EventBusEditor.OnInspectorGUI"/>
         public override void OnInspectorGUI()
@@ -73,7 +73,7 @@ namespace Incantium.Events.Editor.Request
     }
     
     /// <summary>
-    /// Class representing the Unity Editor inspector for the default <see cref="EventTruck{T,T}"/> implementation.
+    /// Class representing the Unity Editor inspector for the <see cref="EventTruck{T,T}"/> implementation.
     /// </summary>
     public abstract class EventTruckEditor<T, TResult> : UnityEditor.Editor
     {
@@ -155,7 +155,7 @@ namespace Incantium.Events.Editor.Request
     }
     
     /// <summary>
-    /// Class representing the Unity Editor inspector for the default <see cref="EventTruck{T,T,T}"/> implementation.
+    /// Class representing the Unity Editor inspector for the <see cref="EventTruck{T,T,T}"/> implementation.
     /// </summary>
     public abstract class EventTruckEditor<T1, T2, TResult> : UnityEditor.Editor
     {
